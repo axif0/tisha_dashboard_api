@@ -8,19 +8,27 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+const allowedOrigins = [
+    'https://tisha-dashboard.vercel.app',
+    'http://localhost:5000',
+    'http://localhost:3000',
+    'https://tisha-dashboard-api.onrender.com'
+];
 
 // Middleware
 app.use(cors({
-    origin: function (origin, callback) {
+    origin: function(origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.indexOf(origin) === -1) {
-            console.log('Blocked origin:', origin); // For debugging
-            return callback(null, true); // Temporarily allow all origins during development
+        if (!origin) {
+            return callback(null, true);
         }
-        return callback(null, true);
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.log('Blocked origin:', origin); // For debugging
+            callback(new Error('Not allowed by CORS'));
+        }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
