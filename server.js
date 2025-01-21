@@ -10,7 +10,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:5001', 'http://localhost:3000'],  // Allow both ports
+    origin: [
+        'http://localhost:5001', 
+        'http://localhost:3000', 
+        'https://tisha-dashboard-api.onrender.com'
+    ],
     credentials: true
 }));
 app.use(express.json());
