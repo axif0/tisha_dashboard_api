@@ -6,9 +6,6 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
 
-// Connect to database
-connectDB();
-
 const app = express();
 
 // Middleware
@@ -30,6 +27,18 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-}); 
+// Connect to database with better error handling
+const startServer = async () => {
+  try {
+    await connectDB();
+    
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer(); 
