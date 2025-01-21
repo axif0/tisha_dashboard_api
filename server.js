@@ -8,14 +8,15 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+
 // Middleware
 app.use(cors({
-    origin: [
-        'http://localhost:5001', 
-        'http://localhost:3000', 
-        'https://tisha-dashboard-api.onrender.com'
-    ],
-    credentials: true
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    maxAge: 86400  // Cache preflight requests for 24 hours
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
