@@ -16,6 +16,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Root route
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to Tisha Dashboard' });
+});
+
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
